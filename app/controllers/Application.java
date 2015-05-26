@@ -21,14 +21,14 @@ public class Application extends Controller {
                 
                 final Cancellable cancellable = 
                     Akka.system().scheduler().schedule
-                         (
+                    (
                               Duration.create(1, SECONDS),
                               Duration.create(1, SECONDS),
                               pingActor,
                               "Tick",
                               Akka.system().dispatcher(),
                               null
-                         );
+                    );
                          
                 in.onClose(new Callback0() {
                 	@Override
@@ -37,11 +37,10 @@ public class Application extends Controller {
                 	}     
                 });
             }
-
         };
      }
      
-     public static WebSocket<String>sysWs() {
+     public static WebSocket<String> sysWs() {
           return new WebSocket<String>() {
                public void onReady (WebSocket.In<String> in, WebSocket.Out<String> out) {
                     final ActorRef sysActor = Akka.system().actorOf(Props.create(Pinger.class, in, out));
@@ -57,7 +56,7 @@ public class Application extends Controller {
                          null
                     );
                     
-                    .onClose(new Callback0() {
+                    in.onClose(new Callback0() {
                          @Override
                          public void invoke() throws Throwable {
                               sysMsg.cancel();
