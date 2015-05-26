@@ -18,6 +18,7 @@ public class Application extends Controller {
         return new WebSocket<String>() {
             public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
                 final ActorRef pingActor = Akka.system().actorOf(Props.create(Pinger.class, in, out));
+                final ActorRef pingActor2 = Akka.system().actorOf(Props.create(Pinger.class, in, out));
                 
                 final Cancellable cancellable = 
                     Akka.system().scheduler().schedule
@@ -35,7 +36,7 @@ public class Application extends Controller {
                     (
                          Duration.create(5, SECONDS),
                          Duration.create(5, SECONDS),
-                         pingActor,
+                         pingActor2,
                          "system",
                          Akka.system().dispatcher(),
                          null
