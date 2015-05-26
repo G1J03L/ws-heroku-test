@@ -46,8 +46,10 @@ public class Application extends Controller {
                 	@Override
                 	public void invoke() throws Throwable {
                 		cancellable.cancel();
-                         sysMsg.cancel();
                 	}
+                    public void invoke() throws Throwable {
+                         sysMsg.cancel();
+                    }
                 });
             }
 
