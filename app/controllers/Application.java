@@ -18,7 +18,6 @@ public class Application extends Controller {
         return new WebSocket<String>() {
             public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
                 final ActorRef pingActor = Akka.system().actorOf(Props.create(Pinger.class, in, out));
-                final ActorRef pingActor2 = Akka.system().actorOf(Props.create(Pinger.class, in, out));
                 
                 final Cancellable cancellable = 
                     Akka.system().scheduler().schedule
@@ -31,28 +30,42 @@ public class Application extends Controller {
                               null
                          );
                          
-                final Cancellable sysMsg = 
-                    Akka.system().scheduler().schedule
-                    (
-                         Duration.create(5, SECONDS),
-                         Duration.create(5, SECONDS),
-                         pingActor2,
-                         "system",
-                         Akka.system().dispatcher(),
-                         null
-                    );
-                
                 in.onClose(new Callback0() {
                 	@Override
                 	public void invoke() throws Throwable {
                 		cancellable.cancel();
-                         sysMsg.cancel();
                 	}     
                 });
             }
 
         };
-    }
+     }
+     
+     public static WebSocket<String>sysWs() {
+          return new WebSocket<String>() {
+               public void onReady (WebSocket.In<String> in, WebSocket.Out<String> out) {
+                    final ActorRef sysActor = Akka.system().actorOf(Props.create(Pinger.class, in, out));
+                         
+                    final Cancellable sysMsg = 
+                    Akka.system().scheduler().schedule
+                    (
+                         Duration.create(5, SECONDS),
+                         Duration.create(5, SECONDS),
+                         sysActor,
+                         "system",
+                         Akka.system().dispatcher(),
+                         null
+                    );
+                    
+                    .onClose(new Callback0() {
+                         @Override
+                         public void invoke() throws Throwable {
+                              sysMsg.cancel();
+                         }
+                    });     
+               }
+          };
+     }
 
     public static Result pingJs() {
         return ok(views.js.ping.render());

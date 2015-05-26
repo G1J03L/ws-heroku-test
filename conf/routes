@@ -3,10 +3,11 @@
 # ~~~~
 
 # Home page
-GET     /                                         controllers.Application.index()
-GET     /pingWs                               controllers.Application.pingWs()
-GET     /assets/javascripts/ping.js     controllers.Application.pingJs()
-GET     /assets/javascripts/sysJs.js      controllers.Application.sysJs()
+GET     /                                             controllers.Application.index()
+GET     /pingWs                                   controllers.Application.pingWs()
+GET     /sysWs                                    controllers.Application.sysWs()
+GET     /assets/javascripts/ping.js         controllers.Application.pingJs()
+GET     /assets/javascripts/sysJs.js        controllers.Application.sysJs()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
