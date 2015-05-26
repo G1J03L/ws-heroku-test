@@ -6,5 +6,5 @@ $(function() {
           $("sysMsg").html("Wait for it... " + event.data);
      }
      
-     sysSocket.onMessage = receiveEvent;
+     sysSocket.onMessage = sysEvent;
 })
