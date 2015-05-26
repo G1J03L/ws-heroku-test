@@ -25,7 +25,11 @@ public class Pinger extends UntypedActor {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Calendar cal = Calendar.getInstance();
             out.write(sdf.format(cal.getTime()));
-        } else {
+        }
+        else if (message.equals("system")) {
+               out.write ("WHERE HAS THE TIME GONE?!");
+        }
+        else {
             unhandled(message);
         }
     }

@@ -18,18 +18,34 @@ public class Application extends Controller {
         return new WebSocket<String>() {
             public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
                 final ActorRef pingActor = Akka.system().actorOf(Props.create(Pinger.class, in, out));
-                final Cancellable cancellable = Akka.system().scheduler().schedule(Duration.create(1, SECONDS),
-                                                   Duration.create(1, SECONDS),
-                                                   pingActor,
-                                                   "Tick",
-                                                   Akka.system().dispatcher(),
-                                                   null
-                                                   );
+                
+                final Cancellable cancellable = 
+                    Akka.system().scheduler().schedule
+                         (
+                              Duration.create(1, SECONDS),
+                              Duration.create(1, SECONDS),
+                              pingActor,
+                              "Tick",
+                              Akka.system().dispatcher(),
+                              null
+                         );
+                         
+                final Cancellable sysMsg = 
+                    Akka.system().scheduler().schedule
+                    (
+                         Duration.create(5, SECONDS),
+                         Duration.create(5, SECONDS),
+                         pingActor,
+                         "system",
+                         Akka.system().dispatcher(),
+                         null
+                    );
                 
                 in.onClose(new Callback0() {
                 	@Override
                 	public void invoke() throws Throwable {
                 		cancellable.cancel();
+                         sysMsg.cancel();
                 	}
                 });
             }
@@ -39,6 +55,10 @@ public class Application extends Controller {
 
     public static Result pingJs() {
         return ok(views.js.ping.render());
+    }
+    
+    public static Result sysJs() {
+         return ok(views.js.sysJs.render());
     }
 
     public static Result index() {
