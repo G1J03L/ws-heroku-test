@@ -3,9 +3,11 @@ $(function() {
      var sysSocket = new WS("@routes.Application.sysWs().webSocketURL(request, true)");
      var incr = 0; 
     
+     sysSocket.send("[get ready]");
+     
      var sysEvent = function (event) {
-          $("#sysMsg").html("Wait for it... " + event.data + "\t" + incr++);
+          //$("#sysMsg").html("Wait for it... " + event.data + "\t" + incr++);
      }
      
-     sysSocket.onmessage = sysEvent;
+    // sysSocket.onmessage = sysEvent;
 })

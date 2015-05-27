@@ -22,12 +22,12 @@ public class Application extends Controller {
                 final Cancellable cancellable = 
                     Akka.system().scheduler().schedule
                     (
-                              Duration.create(1, SECONDS),
-                              Duration.create(1, SECONDS),
-                              pingActor,
-                              "Tick",
-                              Akka.system().dispatcher(),
-                              null
+                         Duration.create(1, SECONDS),
+                         Duration.create(1, SECONDS),
+                         pingActor,
+                         "Tick",
+                         Akka.system().dispatcher(),
+                         null
                     );
                          
                 in.onClose(new Callback0() {
@@ -42,30 +42,19 @@ public class Application extends Controller {
      
      public static WebSocket<String> sysWs() {
           return new WebSocket<String>() {
-               public void onReady (WebSocket.In<String> in, WebSocket.Out<String> out) {
-                    final ActorRef sysActor = Akka.system().actorOf(Props.create(Pinger.class, in, out));
-                         
-                    final Cancellable sysMsg = 
-                    Akka.system().scheduler().schedule
-                    (
-                         Duration.create(5, SECONDS),
-                         Duration.create(5, SECONDS),
-                         sysActor,
-                         "system",
-                         Akka.system().dispatcher(),
-                         null
-                    );
-                    
-                    in.onClose(new Callback0() {
-                         @Override
-                         public void invoke() throws Throwable {
-                              sysMsg.cancel();
-                         }
+               public void onReady (WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
+                    // For each event received on the socket,
+                    in.onMessage(new Callback<JsonNode>() {
+                         public void invoke(JsonNode event) {
+                              // Log events to the console
+                              out.write(event);
+                              println(event);  
+                         } 
                     });     
                }
           };
      }
-
+             
     public static Result pingJs() {
         return ok(views.js.ping.render());
     }
