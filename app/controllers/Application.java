@@ -12,7 +12,8 @@ import views.html.index;
 import akka.actor.ActorRef;
 import akka.actor.Cancellable;
 import akka.actor.Props;
-import org.codehaus.jackson.JsonNode;
+import play.libs.Json;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class Application extends Controller {
     public static WebSocket<String> pingWs() {
