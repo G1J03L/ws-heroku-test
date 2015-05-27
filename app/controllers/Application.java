@@ -3,6 +3,7 @@ package controllers;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import models.Pinger;
 import play.libs.Akka;
+import play.libs.F.Callback;
 import play.libs.F.Callback0;
 import play.mvc.Controller;
 import play.mvc.Result;
