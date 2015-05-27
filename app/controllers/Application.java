@@ -40,8 +40,8 @@ public class Application extends Controller {
         };
      }
      
-     public static WebSocket<String> sysWs() {
-          return new WebSocket<String>() {
+     public static WebSocket<JsonNode> sysWs() {
+          return new WebSocket<JsonNode>() {
                public void onReady (WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
                     // For each event received on the socket,
                     in.onMessage(new Callback<JsonNode>() {
